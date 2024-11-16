@@ -1,0 +1,1 @@
+# Created a Django project that has a readme file
