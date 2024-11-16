@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 def list_books(request):
     books = Book.objects.all()
     context = {"books": books}
-    return render(request, "relationship_app/list_book.html", context)
+    return render(request, "relationship_app/list_books.html", context)
 
 # Class Based View
 class LibraryBookListView(ListView):
