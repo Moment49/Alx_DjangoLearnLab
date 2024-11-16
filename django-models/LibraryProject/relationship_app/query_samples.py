@@ -12,7 +12,7 @@ except Author.DoesNotExist:
 
 # List all books in a library.
 try:
-    lib = Library.objects.get(pk=4)
+    lib = Library.objects.get(name=library_name)
     print(f"The set of books in the library are: {lib.books.all()}")
 except Library.DoesNotExist:
     print("No library found")
