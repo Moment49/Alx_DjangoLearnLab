@@ -12,13 +12,19 @@ def list_books(request):
     return render(request, "relationship_app/list_books.html", context)
 
 # Class Based View
-class LibraryBookListView(ListView):
+class LibraryListView(ListView):
+    # The model
     model = Library
+    # This defines tthe object name that will be instatiated once the class is called(acessible to the template)
     context_object_name = "library"
+    # Defines the path of the template to be rendered
     template_name = "relationship_app/library_detail.html"
+    # This performs the query as an attribute of the class (can be overidden)
     queryset = Library.objects.get(name="tech library")
-    
+
+     
     def get_context_data(self, **kwargs: Any):
+        """This is to add more data context to the View"""
         context_data = super().get_context_data(**kwargs)
 
         context_data['publication_year'] = "2024"
