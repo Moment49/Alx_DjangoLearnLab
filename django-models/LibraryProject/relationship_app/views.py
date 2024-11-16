@@ -12,7 +12,7 @@ def list_books(request):
     return render(request, "relationship_app/list_books.html", context)
 
 # Class Based View
-class LibraryListView(ListView):
+class LibraryDetailView(ListView):
     # The model
     model = Library
     # This defines tthe object name that will be instatiated once the class is called(acessible to the template)
