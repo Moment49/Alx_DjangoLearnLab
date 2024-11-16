@@ -5,7 +5,7 @@ from relationship_app.models import Book, Author, Librarian, Library
 try:
     author_name = "Jack Miller"
     author = Author.objects.get(name=author_name)
-    author_books = Book.objects.filter(author__name=author)
+    author_books = Book.objects.filter(author=author)
     print(f"The list of books belonging to the author {author} are: {author_books}")
 except Author.DoesNotExist:
     print("No author found")
@@ -21,7 +21,8 @@ except Library.DoesNotExist:
 
 # Retrieve the librarian for a library
 try:
-    lib = Library.objects.filter(name="tech library").first()
+    library_name = "tech library"
+    lib = Library.objects.filter(name=library_name).first()
     librarian = Librarian.objects.filter(library=lib).first()
     print(f"The Library for the Library {lib} is {librarian}")
 except Librarian.DoesNotExist:
