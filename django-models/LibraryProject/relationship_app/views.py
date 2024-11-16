@@ -2,6 +2,7 @@ from typing import Any
 from django.shortcuts import render
 from .models import Library, Book
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 # Create your views here.
 # Function based View
