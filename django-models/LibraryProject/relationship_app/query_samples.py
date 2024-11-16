@@ -23,7 +23,7 @@ except Library.DoesNotExist:
 try:
     library_name = "tech library"
     lib = Library.objects.filter(name=library_name).first()
-    librarian = Librarian.objects.filter(library=lib).first()
+    librarian = Librarian.objects.get(library=lib).first()
     print(f"The Library for the Library {lib} is {librarian}")
 except Librarian.DoesNotExist:
     print("No Librarian Found")
