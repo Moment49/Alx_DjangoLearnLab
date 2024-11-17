@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # Create your models here.
 
@@ -37,5 +40,10 @@ class UserProfile(models.Model):
         ("Librarian", 'Librarian'),
         ("Member", 'Member'),
     )
-    roles = models.CharField(max_length=100, choices=ROLES)
+    roles = models.CharField(max_length=100, choices=ROLES, default='Member')
+
+    def __str__(self) -> str:
+        return f"{self.user.username}'s Profile and {self.roles}"
+    
+
 
