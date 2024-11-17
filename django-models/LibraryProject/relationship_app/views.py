@@ -4,6 +4,8 @@ from .models import Library, Book
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .forms import RegiesterForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
 
 # Create your views here.
 # Function based View
@@ -34,11 +36,11 @@ class LibraryDetailView(DetailView):
 # Register view
 def register_view(request):
     if request.method == 'POST':
-        form = RegiesterForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('list-books')
     else:
-        form = RegiesterForm()
+        form = UserCreationForm()
     return render(request, "relationship_app/register.html", {"form": form})
     
