@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from .forms import RegiesterForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.views import LoginView, LogoutView
 
 # Create your views here.
 # Function based View
@@ -39,8 +40,19 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('list-books')
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, "relationship_app/register.html", {"form": form})
+
+class LoginView(LoginView):
+    template_name = 'registration/login.html'
+    next_page = 'home'
+
+class LogoutView(LogoutView):
+    template_name = 'registration/logout.html'
+
+def home(request):
+    return render(request, 'relationship_app/home.html')
+
     
