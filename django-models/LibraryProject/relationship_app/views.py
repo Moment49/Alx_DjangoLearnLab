@@ -1,9 +1,9 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Library, Book
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.contrib.auth.forms import UserCreationForm
+from .forms import RegiesterForm
 
 # Create your views here.
 # Function based View
@@ -33,6 +33,12 @@ class LibraryDetailView(DetailView):
 
 # Register view
 def register_view(request):
-    form = UserCreationForm()
+    if request.method == 'POST':
+        form = RegiesterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list-books')
+    else:
+        form = RegiesterForm()
     return render(request, "relationship_app/register.html", {"form": form})
     
