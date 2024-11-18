@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import list_books, LibraryDetailView, LoginView, LogoutView, home
+from .views import list_books, LibraryDetailView, LoginView, LogoutView, home, admin_view, member_view, librarian_view
 from . import views
 
 
@@ -11,4 +11,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='registration/login.html'), name="login"),
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name="logout"),
     path('', home, name="home"),
+    path('admin_view/', admin_view, name='admin_view'),
+    path('member_view/', member_view, name='member_view'),
+    path('librarian_view/', librarian_view, name='librarian_view'),
 ]
