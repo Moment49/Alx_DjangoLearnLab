@@ -49,6 +49,7 @@ class LoginView(LoginView):
     template_name = 'registration/login.html'
     next_page = 'home'
 
+
 class LogoutView(LogoutView):
     template_name = 'registration/logout.html'
 
