@@ -1,14 +1,16 @@
 from typing import Any
 from django.shortcuts import render, redirect
-from .models import Library, Book, UserProfile
+from .models import Library, Book, UserProfile, Author
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .forms import RegiesterForm
+from django.views.generic.edit import UpdateView
+from .forms import RegiesterForm, AddBookForm, EditBookForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required, login_required
+from django.contrib import messages
 
 # Create your views here.
 # Function based View
@@ -84,5 +86,71 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+@login_required
+@permission_required("relationship_app.can_add_book", raise_exception=True)
+def add_book(request):
+    if request.method == "POST":
+        form = AddBookForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            author = form.cleaned_data['author']
+            # Create the author
+            author = Author.objects.create(name=author)
+            
+            if Author.objects.filter(name=author).exists():
+                Book.objects.create(title=title, author=author)
+                messages.success(request, "Book Added")
+                return redirect('add-book')
+            else:
+                author = Author.objects.create(name=author)
+                Book.objects.create(title=title, author=author)
+                messages.success(request, "Book Added")
+                return redirect('add-book')
+    else:     
+        form = AddBookForm()
+    return render(request, 'relationship_app/add_book.html', {"form": form})
+
+
+@login_required(login_url='login')
+@permission_required("relationship_app.can_delete_book", raise_exception=True)
+def delete_book(request, id):
+    book = Book.objects.get(id=id)
+    context = {'book': book}
+    if request.method == "POST":
+        book = Book.objects.get(id=id)
+        book.delete()
+        return redirect('list-books')
+    else:
+        return render(request, "relationship_app/delete_book.html", context)
+
+
+@login_required
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, id):
+    book = Book.objects.get(id=id) 
+    if request.method == "POST":
+        form = EditBookForm(request.POST)
+        if form.is_valid():
+            title= form.cleaned_data['title']
+            author = form.cleaned_data['author']
+            # create the new author instance
+            author = Author.objects.create(name=author)
+        
+            book.title = title
+            book.author = author
+            book.save()
+            messages.success(request, "Book Upated")
+            return redirect('list-books')
+        else:
+            return False
+    
+    else:
+        form = EditBookForm({"title": book.title, "author":book.author})
+        return render(request, 'relationship_app/edit_book.html', {'form': form})
+
+
+
+
 
     
