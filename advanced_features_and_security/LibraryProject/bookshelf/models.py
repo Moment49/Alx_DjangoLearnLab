@@ -15,7 +15,7 @@ class Book(models.Model):
         return f"{self.title} {self.author} {self.publication_year}"
     
 # Create your models here.
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, username, date_of_birth, password=None):
         if not username:
             raise ValueError("username is required")
@@ -48,5 +48,5 @@ class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='uploads/', blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
-    objects = UserManager()
+    objects = CustomUserManager()
     REQUIRED_FIELDS = ['date_of_birth']
