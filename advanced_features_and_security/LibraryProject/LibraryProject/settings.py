@@ -135,7 +135,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Login URL
 LOGIN_URL = 'login'
 
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 MEDIA_URL = "/media/"
 
