@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if user.is_authenticated%}
+     <p>Welcome {{user.username}}</p>
+        {% if perms.bookshelf.can_create and perms.bookshelf.can_edit%}
+            <h1>This is the admin and the can create or Edit</h1>
+        {% endif%}
+    {% endif %}
+</body>
+</html>

@@ -25,6 +25,7 @@ class CustomUserAdmin(BaseUserAdmin):
     fieldsets = [
         (None, {"fields": ["username", "password"]}),
         ("Personal info", {"fields": ["date_of_birth", "profile_photo"]}),
+        ("Permissions", {"fields": ["is_staff", "is_active", "groups", "user_permissions"]}),
         
     ]
 
