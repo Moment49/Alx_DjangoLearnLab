@@ -149,7 +149,7 @@ def edit_book(request, id):
     
     else:
         form = EditBookForm({"title": book.title, "author":book.author})
-        return render(request, 'relationship_app/edit_book.html', {'form': form})
+    return render(request, 'relationship_app/edit_book.html', {'form': form})
 
 
 

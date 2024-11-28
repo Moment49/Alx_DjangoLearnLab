@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from .forms import ExampleForm
 
 
 # Create your views here.
@@ -8,7 +9,7 @@ from .models import Book
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
     books = Book.objects.all()
-    return render(request, "bookshelf/books_list.html", {"booka": books})
+    return render(request, "bookshelf/books_list.html", {"books": books})
 
 @permission_required('bookshelf.can_create', raise_exception=True)
 def create(request):
@@ -27,5 +28,13 @@ def delete(request, id):
 def view(request):
     return render(request, "bookshelf/view.html")
 
-def search_book(request, tile):
-    pass
+def search_book(request): 
+    search_books = Book.objects.none
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            search_books = Book.objects.filter(title__contains=title)
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {"form": form, "search_books": search_books})
