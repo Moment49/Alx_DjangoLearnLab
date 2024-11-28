@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-228-v4!%r4yrq&i##^_l-n0w6*&o397x49j+vu66e+*&@k9clu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['127.0.0.1']
@@ -145,16 +145,22 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Delpoyment Configurations
+# Browser Headers Config
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 # Content Security Policy
 CSP_IMG_SRC = ("'self'", 'https://html.sammy-codes.com')
-
 CSP_STYLE_SRC = ("'self'")
-
 CSP_SCRIPT_SRC = ("'self'")
+
+#HTTPS Config
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 60
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Cookies config
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
