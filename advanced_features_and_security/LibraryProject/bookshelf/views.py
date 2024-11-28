@@ -26,3 +26,6 @@ def delete(request, id):
 @permission_required('bookshelf.can_view', raise_exception=True)
 def view(request):
     return render(request, "bookshelf/view.html")
+
+def search_book(request, tile):
+    pass
