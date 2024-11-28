@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,5 +17,7 @@
     {% for search_book in search_books %}
         <p>{{search_book}}</p>
     {% endfor %}
+    <img src="{% static 'bookshelf/test.jpg' %}" width=150px  alt="None" />
+    <img src="https://html.sammy-codes.com/images/small-profile.jpeg" alt="None"/>
 </body>
 </html>
