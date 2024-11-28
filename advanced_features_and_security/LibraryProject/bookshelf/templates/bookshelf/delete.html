@@ -6,6 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Delete view</h1>
+    {% if user.is_authenticated%}
+    {% if perms.bookshelf.can_delete%}
+        <h1>Delete view</h1>
+    {% endif %}
+{% endif %}
 </body>
 </html>
