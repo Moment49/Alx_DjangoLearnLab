@@ -23,9 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-228-v4!%r4yrq&i##^_l-n0w6*&o397x49j+vu66e+*&@k9clu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['127.0.0.1']
+
 
 
 # Application definition
@@ -135,8 +137,16 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Login URL
 LOGIN_URL = 'login'
 
+# Custom User 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
+# Media Url and file setup
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Delpoyment Configurations
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
