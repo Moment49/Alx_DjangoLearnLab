@@ -7,7 +7,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    background: linear-gradient(to right, rgb(255, 255, 255), rgb(172, 172, 170));
     color: #333;
 }
 
@@ -24,6 +24,7 @@ header nav ul {
 header nav ul li {
     display: inline;
     margin: 0 15px;
+    color: white;
 }
 
 header nav ul li a {
@@ -32,9 +33,16 @@ header nav ul li a {
     font-size: 18px;
 }
 
+header nav ul li form button{
+    display: inline-block;
+    border: 1px solid red;
+    background: black;
+}
+
 .content {
     margin: 20px;
 }
+
 
 footer {
     text-align: center;
@@ -43,3 +51,23 @@ footer {
     background-color: #333;
     color: white;
 }
+
+.form_cta{
+    width: 450px;
+    height: auto;
+    margin: 10px auto;
+    padding: 20px;
+    background: radial-gradient(rgb(252, 248, 248), rgb(255, 255, 255));
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+}
+
+.form_cta form p a{
+    color: black;
+    font-weight: 500; 
+}
+
+.form_cta form p{
+    color: black;
+}
+

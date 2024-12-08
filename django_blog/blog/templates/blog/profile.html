@@ -1,0 +1,32 @@
+{% extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{% block title %}Django Blog - Dashboard{% endblock %}
+{% load static %}
+
+{% block header%}
+<header>
+   <nav>
+       <ul>
+           <li><a href="{% url 'home' %}">Home</a></li>
+           <li><a>Blog Posts</a></li>
+           <li><a href="{% url 'logout' %}">Logout</a></li>
+       </ul>
+   </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated%}
+    <div class="form_cta">
+        <h1 class="text-center h5 pb-4 pt-4">Profile Details</h1>
+        <img  class='rounded-circle' src="{{ user.profile.profile_img.url }}" width="100px"/>
+        <p>{{user_profile.user.username}}</p>
+        <p>{{user_profile.user.email}}</p>
+        <p>{{user_profile.bio}}</p>
+        <p>{{user_profile.age}}</p>
+        <p>{{user_profile.date_of_birth}}</p>
+
+        <a href="{% url 'profile' %}">Edit Profile</a>
+    </div>
+    {% endif %}
+{% endblock %}

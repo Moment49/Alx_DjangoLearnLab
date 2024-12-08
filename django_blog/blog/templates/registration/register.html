@@ -1,0 +1,57 @@
+{% extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{% block title %}Django Blog - Register{% endblock %}
+
+
+{% block header%}
+<header>
+   <nav>
+       <ul>
+           <li><a href="{% url 'home' %}">Home</a></li>
+           <li><a>Blog Posts</a></li>
+           <li><a>Login</a></li>
+       </ul>
+   </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Page-specific content goes here -->
+{% if messages %}
+<div class="messages">
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show w-25 ms-auto " role="alert">
+    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>          
+{% endfor %}
+</div>
+{% endif %}
+ <div class="form_cta">
+ <h1 class="text-center h5 pb-4 pt-4">Create An Account</h1>
+ <form method="post" action="{% url 'register' %}">
+   {% csrf_token%}
+   <div class="mb-3">
+      {{ form.username|as_crispy_field }}
+  </div>
+  <div class="mb-3">
+      {{ form.email|as_crispy_field }}
+  </div>
+  <div class="mb-3">
+      {{ form.first_name|as_crispy_field }}
+  </div>
+  <div class="mb-3">
+      {{ form.last_name|as_crispy_field }}
+  </div>
+  <div class="mb-3">
+      {{ form.password1|as_crispy_field }}
+  </div>
+  <div class="mb-3">
+      {{ form.password2|as_crispy_field }}
+  </div>
+  <button type="submit" class="btn btn-dark w-100">Register</button>
+  <p class="text-center p-1">Have already an account? <a href="{% url 'login' %}">Login here</a></p>
+</form>
+</div>
+
+{% endblock %}
