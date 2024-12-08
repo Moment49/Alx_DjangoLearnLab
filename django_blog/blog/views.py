@@ -20,10 +20,10 @@ def register(request):
     else:
         form = UserRegistration()
     context = {"form": form}
-    return render(request, "registration/register.html", context)
+    return render(request, "blog/register.html", context)
 
 class Login(LoginView):
-    template_name = 'registration/login.html'
+    template_name = 'blog/login.html'
     next_page = 'profile'
 
 class LogoutView(LogoutView):
