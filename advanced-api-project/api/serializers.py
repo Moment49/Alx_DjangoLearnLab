@@ -28,7 +28,3 @@ class BookSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Publication date is way ahead of the current year")
 
         return data
-
-
-
-
