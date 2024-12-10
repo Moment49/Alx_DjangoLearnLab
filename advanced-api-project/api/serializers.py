@@ -16,7 +16,7 @@ class BookSerializer(serializers.ModelSerializer):
     """This is a serializer class that serializes and deserializes the book object into json it contains a single field for output
         it also has a nested AuthorSerializer class which determines the flow of how the data is been passed or represented on every http request
     """
-    author = AuthorSerializer(many=True)
+    author = AuthorSerializer(many=True, read_only=True)
     class Meta:
         model = Book
         fields = "__all__"
