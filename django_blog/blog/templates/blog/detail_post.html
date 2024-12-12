@@ -1,6 +1,6 @@
 {% extends 'blog/base.html'%}
 {% load crispy_forms_tags %}
-{% block title %}Django Blog - Home{% endblock %}
+{% block title %}Django Blog - Blog Posts{% endblock %}
 {% load static %}
 
 
@@ -17,18 +17,13 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-4">Welcome to Daily News Blog</h1>
+    <h1>Post Detail</h1>
     <div class="cat">
-        {% for blog in all_posts %}
         <hr/>
-        <h2>{{ blog.title }}</h2>
-        <span>{{ blog.published_date }} by {{blog.author}} </span>
-        <p > {{blog.content}}</p>
-        <a href="{% url 'detail_post' blog.id %}" class="btn btn-dark mt-1 mb-1 ms-1">See more</a>
+        <h2>{{ singlepost.title }}</h2>
+        <span>{{ singlepost.published_date }} by {{singlepost.author}} </span>
+        <p > {{singlepost.content}}</p>
         <hr/>
     </div>
-        {% empty %}
-        <p>No Blogs yet.</p>
-    {% endfor %}
 {% endblock %}
 

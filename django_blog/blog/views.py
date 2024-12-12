@@ -4,11 +4,15 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
-from .models import UserProfile, User
+from .models import UserProfile, User, Post
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 # Create your views here.
 
 def home(request):
-    return render(request, 'blog/home.html')
+    all_posts = Post.objects.all()
+    context = {"all_posts": all_posts}
+    return render(request, 'blog/home.html', context)
 
 def register(request):
     if request.method == "POST":
@@ -66,3 +70,12 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
+class BlogPostListView(ListView):
+    model = Post
+    template_name = "blog/list_posts.html"
+    context_object_name = "all_posts"
+
+class BlogPostDetailView(DetailView):
+    model = Post
+    context_object_name = "singlepost"
+    template_name = "blog/detail_post.html"
