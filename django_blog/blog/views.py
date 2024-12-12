@@ -35,7 +35,7 @@ def logout_view(request):
     return render(request, 'registration/logout.html')
 
 def profile(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = UserProfile.objects.get(user__username=request.user)
     context = {"user_profile":user_profile}
     if request.method == 'POST':
         form = ProfileForm(request=request.FILES)

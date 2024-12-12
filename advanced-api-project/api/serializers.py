@@ -9,7 +9,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['name']
-        read_only_fields = ['name']
+        
     
 
 
@@ -17,7 +17,7 @@ class BookSerializer(serializers.ModelSerializer):
     """This is a serializer class that serializes and deserializes the book object into json it contains a single field for output
         it also has a nested AuthorSerializer class which determines the flow of how the data is been passed or represented on every http request
     """
-    author = AuthorSerializer(read_only=True)
+    author = AuthorSerializer()
     class Meta:
         model = Book
         fields = "__all__"
@@ -31,4 +31,14 @@ class BookSerializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
-        pass
+        author_data = validated_data.pop('author')
+        name = author_data['name']
+        try:
+            author = Author.objects.get(name=name)
+            book = Book.objects.create(**validated_data, author=author)
+        except Author.DoesNotExist:
+            author = Author.objects.create(name=name)
+            book = Book.objects.create(**validated_data, author=author)
+        book.save()
+        return book
+        

@@ -19,7 +19,7 @@
     {% if user.is_authenticated%}
     <div class="form_cta">
         <h1 class="text-center h5 pb-4 pt-4">Profile Details</h1>
-        <img  class='rounded-circle' src="{{ user.profile.profile_img.url }}" width="100px"/>
+       <img  class='rounded-circle' src="{{ user.profile.profile_img.url }}" width="100px"/>
         <p>{{user_profile.user.username}}</p>
         <p>{{user_profile.user.email}}</p>
         <p>{{user_profile.bio}}</p>
@@ -30,3 +30,4 @@
     </div>
     {% endif %}
 {% endblock %}
+
