@@ -46,16 +46,18 @@ header nav ul li form button{
 
 footer {
     text-align: center;
-    margin-top: 50px;
+    margin: auto 0px;
     padding: 10px;
     background-color: #333;
     color: white;
+    position: relative;
+    bottom: 0;
 }
 
 .form_cta{
     width: 450px;
     height: auto;
-    margin: 10px auto;
+    margin: 5px auto;
     padding: 20px;
     background: radial-gradient(rgb(252, 248, 248), rgb(255, 255, 255));
     border-radius: 10px;
@@ -71,3 +73,80 @@ footer {
     color: black;
 }
 
+
+.form_cta2{
+    width: 550px;
+    height: 400px;
+    margin: 0px auto;
+    background: radial-gradient(rgb(252, 248, 248), rgb(255, 255, 255));
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+}
+.form_cta2 .edit_main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap:0.4rem;
+    align-items: center;
+    border: 1px solid red;
+    
+
+}
+
+.form_cta2 .edit_main .profile_img{
+    width: 50%;
+    height: 100%;
+    max-width: 100%;
+   
+}
+.edit_main .profile_img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit_main .profile_detail{
+    width: 50%;
+    height: 100%;
+    padding: 10px 0px;
+    
+
+}
+
+.edit_main .profile_detail p{ 
+    padding-top: 5px;
+    font-size: 0.75rem;
+    font-style: italic;
+   
+}
+
+.form_cta2 .edit_main .edit_profile{
+    background-color: #305447;
+    border: none;
+    color: white;
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    transition: .5s ease;
+}
+.form_cta2 .edit_main .edit_profile:hover{
+    background-color: black;
+    color: white;
+}
+
+.form_cta3 {
+    width: 550px;
+    height: auto;
+    margin: 0px auto;
+    background: radial-gradient(rgb(252, 248, 248), rgb(255, 255, 255));
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+   
+}
+
+.form_cta3 div label{
+    font-size: 19px;
+    padding: 10px;
+}

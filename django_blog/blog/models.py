@@ -15,7 +15,7 @@ class Post(models.Model):
 
 
 class UserProfile(models.Model):
-    bio = models.TextField()
+    bio = models.TextField(blank=True)
     profile_img = models.ImageField(upload_to='uploads/', blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)

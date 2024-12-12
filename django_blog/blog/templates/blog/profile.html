@@ -1,7 +1,8 @@
 {% extends 'blog/base.html'%}
 {% load crispy_forms_tags %}
-{% block title %}Django Blog - Dashboard{% endblock %}
+{% block title %}Django Blog - Profile{% endblock %}
 {% load static %}
+
 
 {% block header%}
 <header>
@@ -17,16 +18,22 @@
 
 {% block content %}
     {% if user.is_authenticated%}
-    <div class="form_cta">
-        <h1 class="text-center h5 pb-4 pt-4">Profile Details</h1>
-       <img  class='rounded-circle' src="{{ user.profile.profile_img.url }}" width="100px"/>
-        <p>{{user_profile.user.username}}</p>
-        <p>{{user_profile.user.email}}</p>
-        <p>{{user_profile.bio}}</p>
-        <p>{{user_profile.age}}</p>
-        <p>{{user_profile.date_of_birth}}</p>
-
-        <a href="{% url 'profile' %}">Edit Profile</a>
+ 
+    <div class="form_cta2">
+        <div class="edit_main">
+            <div class="profile_img">
+                <img  src="{{ user.profile.profile_img.url }}"/>
+            </div>
+            <div class="profile_detail">
+                <h1 class="text-start h3 pb-1 pt-1">Profile Detail</h1>
+                <p><b>Username</b>: {{user_profile.user.username}}</p>
+                <p><b>Email</b>: {{user_profile.user.email}}</p>
+                <p><b>Bio</b>: {{user_profile.bio |truncatewords:"50"}}</p>
+                <p><b>Age</b>: {{user_profile.age}} years</p>
+                <p><b>Date of Birth</b>: {{user_profile.date_of_birth}}</p>
+                <a class="edit_profile" href="{% url 'edit_profile' user %}">Edit Profile</a>
+            </div> 
+        </div>  
     </div>
     {% endif %}
 {% endblock %}

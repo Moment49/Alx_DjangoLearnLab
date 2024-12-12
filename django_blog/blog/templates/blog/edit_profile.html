@@ -1,0 +1,44 @@
+{% extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{% block title %}Django Blog - Edit Profile{% endblock %}
+{% load static %}
+
+{% block header%}
+<header>
+   <nav>
+       <ul>
+           <li><a href="{% url 'home' %}">Home</a></li>
+           <li><a>Blog Posts</a></li>
+           <li><a href="{% url 'logout' %}">Logout</a></li>
+       </ul>
+   </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated%}
+ 
+    <div class="form_cta3">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-1">
+                {{ form_profile.profile_img|as_crispy_field }}
+            </div>
+            <div class="mb-1">
+                {{ form_profile.bio|as_crispy_field }}
+            </div>
+            <div class="mb-1">
+                {{ form_profile.date_of_birth|as_crispy_field }}
+            </div>
+            <div class="mb-1">
+                {{ form_profile.age|as_crispy_field }}
+            </div>
+            <div class="mb-1">
+                {{ form_user.email|as_crispy_field }}
+            </div>
+            <button class="btn btn-dark w-25 mt-2 mb-2 ms-2" type="submit">Save</button>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+
