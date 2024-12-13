@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import UserProfile, User, Post
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views here.
 
 
@@ -102,7 +102,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
     
     
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_edit.html'
@@ -113,9 +113,21 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         form.save()
         return super().form_valid(form)
     
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+    def test_func(self):
+        post = self.get_object()
+        if post.author == self.request.user:
+            print("Valid User")
+            return self.request.user
+    
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('dashboard')
+
+    def test_func(self):
+        post = self.get_object()
+        if post.author == self.request.user:
+            print("Valid User")
+            return self.request.user
 
     
