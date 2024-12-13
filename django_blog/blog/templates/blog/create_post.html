@@ -1,0 +1,28 @@
+{% extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{% block title %}Django Blog - Blog Posts{% endblock %}
+{% load static %}
+
+
+{% block header%}
+<header>
+   <nav>
+       <ul>
+           <li><a href="{% url 'home' %}">Home</a></li>
+           <li><a href="{% url 'all_posts'%}">Blog Posts</a></li>
+           <li><a href="{% url 'logout' %}">Logout</a></li>
+       </ul>
+   </nav>
+</header>
+{% endblock %}
+{% block content %}
+    <h1>Create Post</h1>
+        <div class="cat">
+            <form method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit">Create post</button>
+            </form>
+        </div>
+{% endblock %}
+

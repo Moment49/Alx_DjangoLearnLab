@@ -2,7 +2,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile, Post
-
+import re
+from django.core.exceptions import ValidationError
 
 class UserRegistration(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
@@ -37,4 +38,22 @@ class UserForm(UserChangeForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content", "author"]
+        fields = ["title", "content"]
+    
+    def save(self, commit=True):
+        instance = super(PostForm, self).save(commit=False)
+        if commit:
+            instance.save()
+        return instance
+    
+    def clean(self):
+        super(PostForm, self).clean()
+        title = self.cleaned_data['title']
+        regex = re.compile('[0-9@_!#$%^&*()<>?/\|}{~:]')
+
+        if len(title) > 200 or regex.search(title) != None:
+             raise ValidationError("Title must not contain special characters or numbers and should be less than 200")
+        else:
+            print("Title is valid")
+       
+      

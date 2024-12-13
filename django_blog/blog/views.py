@@ -1,18 +1,26 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistration, UserForm, ProfileForm
+from .forms import UserRegistration, UserForm, ProfileForm, PostForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from .models import UserProfile, User, Post
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
-def home(request):
+
+class HomeBlogPostList(ListView):
+    model = Post
+    template_name = "blog/home.html"
+    context_object_name = "all_posts"
+
+def dashboard(request):
     all_posts = Post.objects.all()
     context = {"all_posts": all_posts}
-    return render(request, 'blog/home.html', context)
+    return render (request, "blog/dashboard.html", context)
 
 def register(request):
     if request.method == "POST":
@@ -28,7 +36,7 @@ def register(request):
 
 class Login(LoginView):
     template_name = 'blog/login.html'
-    next_page = 'profile'
+    next_page = 'dashboard'
 
 class LogoutView(LogoutView):
     template_name = 'registration/logout.html'
@@ -70,7 +78,7 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
-class BlogPostListView(ListView):
+class BlogPostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = "blog/list_posts.html"
     context_object_name = "all_posts"
@@ -79,3 +87,31 @@ class BlogPostDetailView(DetailView):
     model = Post
     context_object_name = "singlepost"
     template_name = "blog/detail_post.html"
+
+class BlogCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/create_post.html'
+    success_url = reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.save()
+        return super().form_valid(form)
+    
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/edit_post.html'
+    success_url = reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.save()
+        return super().form_valid(form)
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'blog/delete_post.html'
+    success_url = reverse_lazy('dashboard')
+
+    
