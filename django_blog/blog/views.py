@@ -12,10 +12,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
-class HomeBlogPostList(ListView):
-    model = Post
-    template_name = "blog/home.html"
-    context_object_name = "all_posts"
+# class HomeBlogPostList(ListView):
+#     model = Post
+#     template_name = "blog/home.html"
+#     context_object_name = "all_posts"
 
 def dashboard(request):
     all_posts = Post.objects.all()
