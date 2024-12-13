@@ -12,10 +12,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
-# class HomeBlogPostList(ListView):
-#     model = Post
-#     template_name = "blog/home.html"
-#     context_object_name = "all_posts"
+class HomeBlogPostList(ListView):
+    model = Post
+    template_name = "blog/home.html"
+    context_object_name = "all_posts"
 
 def dashboard(request):
     all_posts = Post.objects.all()
@@ -46,7 +46,7 @@ def logout_view(request):
     redirect('login')
     return render(request, 'registration/logout.html')
 
-
+@login_required
 def profile(request):
     user_profile = UserProfile.objects.get(user__username=request.user)
     context = {"user_profile":user_profile}
