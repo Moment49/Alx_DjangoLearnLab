@@ -81,7 +81,7 @@ def edit_profile(request, user):
 
 class PostListView(ListView):
     model = Post
-    template_name = "blog/list_posts.html"
+    template_name = "blog/post_list.html"
     context_object_name = "all_posts"
 
 class PostDetailView(DetailView):
