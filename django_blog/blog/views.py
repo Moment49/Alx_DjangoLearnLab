@@ -88,7 +88,7 @@ class BlogPostDetailView(DetailView):
     context_object_name = "singlepost"
     template_name = "blog/detail_post.html"
 
-class BlogCreateView(LoginRequiredMixin, CreateView):
+class CreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/create_post.html'
@@ -99,7 +99,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         form.save()
         return super().form_valid(form)
     
-class BlogUpdateView(LoginRequiredMixin, UpdateView):
+class UpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/edit_post.html'
@@ -109,7 +109,7 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
-class BlogDeleteView(LoginRequiredMixin, DeleteView):
+class DeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/delete_post.html'
     success_url = reverse_lazy('dashboard')
