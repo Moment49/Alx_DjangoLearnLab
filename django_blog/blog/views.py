@@ -77,7 +77,7 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
-class ListView(ListView):
+class PostListView(ListView):
     model = Post
     template_name = "blog/list_posts.html"
     context_object_name = "all_posts"
