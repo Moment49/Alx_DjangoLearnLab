@@ -78,7 +78,7 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
-class ListView(LoginRequiredMixin, ListView):
+class ListView(ListView):
     model = Post
     template_name = "blog/list_posts.html"
     context_object_name = "all_posts"
@@ -109,6 +109,7 @@ class UpdateView(UpdateView):
         form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
+    
 class DeleteView(DeleteView):
     model = Post
     template_name = 'blog/delete_post.html'
