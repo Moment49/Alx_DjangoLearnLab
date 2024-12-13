@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from .models import UserProfile, User, Post
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -45,6 +46,7 @@ def logout_view(request):
     redirect('login')
     return render(request, 'registration/logout.html')
 
+
 def profile(request):
     user_profile = UserProfile.objects.get(user__username=request.user)
     context = {"user_profile":user_profile}
@@ -77,7 +79,7 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
-class PostListView(ListView):
+class ListView(ListView):
     model = Post
     template_name = "blog/list_posts.html"
     context_object_name = "all_posts"
@@ -87,7 +89,7 @@ class DetailView(DetailView):
     context_object_name = "singlepost"
     template_name = "blog/detail_post.html"
 
-class CreateView(CreateView):
+class CreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/create_post.html'
@@ -98,7 +100,7 @@ class CreateView(CreateView):
         form.save()
         return super().form_valid(form)
     
-class UpdateView(UpdateView):
+class UpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/edit_post.html'
@@ -109,7 +111,7 @@ class UpdateView(UpdateView):
         form.save()
         return super().form_valid(form)
     
-class DeleteView(DeleteView):
+class DeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/delete_post.html'
     success_url = reverse_lazy('dashboard')
