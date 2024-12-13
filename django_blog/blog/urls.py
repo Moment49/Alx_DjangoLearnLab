@@ -9,11 +9,11 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('profile/', views.profile, name="profile"),
     path('edit_profile/<str:user>', views.edit_profile, name="edit_profile"),
-    path('posts/', views.ListView.as_view(), name="all_posts"),
-    path('posts/<int:pk>', views.DetailView.as_view(), name="detail_post"),
-    path('post/new/', views.CreateView.as_view(), name="create_post"),
-    path('post/<int:pk>/update/', views.UpdateView.as_view(), name="update_post"),
-    path('post/<int:pk>/delete/', views.DeleteView.as_view(), name="delete_post"),
+    path('posts/', views.PostListView.as_view(), name="all_posts"),
+    path('posts/<int:pk>', views.PostDetailView.as_view(), name="detail_post"),
+    path('post/new/', views.PostCreateView.as_view(), name="create_post"),
+    path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name="update_post"),
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name="delete_post"),
     path('dashboard/', views.dashboard, name="dashboard"),
     
 ]

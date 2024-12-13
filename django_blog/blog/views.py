@@ -79,17 +79,17 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
-class ListView(ListView):
+class PostListView(ListView):
     model = Post
     template_name = "blog/list_posts.html"
     context_object_name = "all_posts"
 
-class DetailView(DetailView):
+class PostDetailView(DetailView):
     model = Post
     context_object_name = "singlepost"
     template_name = "blog/detail_post.html"
 
-class CreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/create_post.html'
@@ -100,7 +100,7 @@ class CreateView(LoginRequiredMixin, CreateView):
         form.save()
         return super().form_valid(form)
     
-class UpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/edit_post.html'
@@ -111,7 +111,7 @@ class UpdateView(LoginRequiredMixin, UpdateView):
         form.save()
         return super().form_valid(form)
     
-class DeleteView(LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/delete_post.html'
     success_url = reverse_lazy('dashboard')
