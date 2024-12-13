@@ -86,8 +86,9 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
-    context_object_name = "singlepost"
     template_name = "blog/detail_post.html"
+    context_object_name = "singlepost"
+ 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -99,6 +100,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
+    
     
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
