@@ -86,14 +86,14 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = "blog/detail_post.html"
+    template_name = "blog/post_detail.html"
     context_object_name = "singlepost"
  
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
-    template_name = 'blog/create_post.html'
+    template_name = 'blog/post_create.html'
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
@@ -105,7 +105,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
-    template_name = 'blog/edit_post.html'
+    template_name = 'blog/post_edit.html'
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
@@ -115,7 +115,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
-    template_name = 'blog/delete_post.html'
+    template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('dashboard')
 
     
