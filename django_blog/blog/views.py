@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from .models import UserProfile, User, Post
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from django.views.generic.detail import DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
