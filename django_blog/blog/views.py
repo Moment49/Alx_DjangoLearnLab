@@ -78,12 +78,12 @@ def edit_profile(request, user):
         form_user= UserForm()
     return render(request, 'blog/edit_profile.html', {"form_profile":form_profile, "form_user":form_user})
 
-class BlogPostListView(LoginRequiredMixin, ListView):
+class ListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = "blog/list_posts.html"
     context_object_name = "all_posts"
 
-class BlogPostDetailView(DetailView):
+class DetailView(DetailView):
     model = Post
     context_object_name = "singlepost"
     template_name = "blog/detail_post.html"
