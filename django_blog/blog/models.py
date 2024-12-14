@@ -14,6 +14,10 @@ class Post(models.Model):
         return f"{self.title} {self.content} {self.published_date}"
 
 
+class Comment(models.Model):
+    ...
+
+
 class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     profile_img = models.ImageField(upload_to='uploads/', blank=True, null=True)

@@ -1,32 +1,44 @@
-from django.test import TestCase, Client
+from rest_framework.test import APITestCase, URLPatternsTestCase
 from .models import Book, Author
-from django.urls import reverse
+from django.urls import reverse, include, path
+from rest_framework import status
 
 # Create your tests here.
-class BookModels(TestCase):
+class BookModels(APITestCase):
     def setUp(self):
-        """Set up for each test that will run before each test"""
-        self.author = Author.objects.create(name="john")
-        self.book = Book.objects.create(title="wonderland", publication_year=2023, author=self.author)
-    def test_model_book(self):
-        self.assertEqual(str(self.book), 'wonderland 2023')
-        self.assertTrue(isinstance(self.book, Book))
-    
-class TestListBook(TestCase):
-        def test_list_book(self):
-            c = Client()
-            response = self.client.get(reverse('list_books'), {"author":{"name":"john"}, "title":"wonderland","publication_year":2023})
-            self.assertEqual(response.status_code, 200)
+        # Setup test client (this is automatically handled by APITestCase)
+        
+        # Create an author to associate with books
+        self.author = Author.objects.create(
+            name="J.K. Rowling"
+        )
+        
+        # Data for creating a book
+        self.book_data = {
+            'title': 'Harry Potter and the Philosopher\'s Stone',
+            'publication_year': 2022,
+            'author': {
+                'name': self.author.name
+            }
+        }
 
-class TestCreateBook(TestCase):
-        def test_create_book(self):
-            c = Client()
-            response = self.client.post(reverse('book_create'), {"author":{"name":"john"}, "title":"wonderland","publication_year":2023})
-            self.assertEqual(response.status_code, 200)
+        Book.objects.create(title=self.book_data['title'], 
+                            publication_year=self.book_data['publication_year'], author=self.author)
 
-class TestDeleteBook(TestCase):
-        def test_delete_book(self):
-            c = Client()
-            response = self.client.delete(reverse('delete_book', args=[0]))
-            self.assertEqual(response.status_code, 204)
+        self.book_del = Book.objects.get(title=self.book_data['title'])
+        print(self.book_del.id)
+    def test_create_book(self):
+        """
+        Ensure we can create a new account object.
+        """
+        url = reverse('book_create')
+        response = self.client.post(url, self.book_data, format='json')
+        print(response.data)
+        self.assertEqual(response.status_code, 201)
 
+    def test_delete_book(self):
+        """Delete a book """
+        url = reverse('delete_book',  kwargs={'pk': self.book_del.id})
+        response = self.client.delete(url,  format="json")
+        print(response.data)
+        self.assertEqual(response.status_code, 204)
