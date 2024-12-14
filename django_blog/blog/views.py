@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, User, Post
+from .models import UserProfile, User, Post, Comment
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -130,4 +130,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             print("Valid User")
             return self.request.user
 
-    
+def comment_list(request):
+    # comments = Comment.objects.get(pos)
+    ...
