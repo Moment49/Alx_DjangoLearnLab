@@ -83,11 +83,6 @@ class PostListView(ListView):
     model = Post
     template_name = "blog/post_list.html"
     context_object_name = "all_posts"
-
-class PostDetailView(DetailView):
-    model = Post
-    template_name = "blog/post_detail.html"
-    context_object_name = "singlepost"
  
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -130,6 +125,18 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             print("Valid User")
             return self.request.user
 
-def comment_list(request):
-    # comments = Comment.objects.get(pos)
-    ...
+class CommentList(CreateView):
+    model = Comment
+    template_name = 'blog/comment_create.html'
+    context_object_name = 'comment_blog'
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/post_detail.html"
+    context_object_name = "singlepost"
+
+def comment_list(request, post_id):
+    post = Post.objects.get(id=post_id)
+    comments = Comment.objects.filter(post=post)
+    context = {"comments": comments, "post":post}
+    return render(request, 'blog/comments_post.html', context)
