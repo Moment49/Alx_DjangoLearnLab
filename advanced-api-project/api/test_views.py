@@ -13,7 +13,9 @@ class BookModels(APITestCase):
         # Create the user and Token and associate the token with user
         self.user = User.objects.create_user(username="john", password="secret")
         self.token = Token.objects.create(user=self.user)
-        
+
+        self.client.login(username=self.user.username, password=self.user.password)
+
         # User data to be sent to obtain the token
         self.user_data = {
             "username":"john",
