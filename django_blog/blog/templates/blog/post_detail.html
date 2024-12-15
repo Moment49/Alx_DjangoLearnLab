@@ -26,8 +26,10 @@
         <h2>comments: </h2>
         {% for comment in comment_data %}
         <p>{{comment.content}}</p>
+        {% if user.is_authenticated and request.user == comment.post.author %}
         <a href="{% url 'comment_edit' comment.id %}" class="btn btn-dark">Edit comment</a>
         <a href="{% url 'comment_delete' comment.id %}" class="btn btn-danger">Delete comment</a>
+        {% endif %}
         {% endfor %}
 
         <!-- Add a comment -->
@@ -35,7 +37,7 @@
         <form method="post" action="{% url 'create_comment' post.id %}">
             {% csrf_token %}
             {{comment_form.as_p}}
-            <button type="submit">Add comment</button>
+            <button type="submit" class="btn btn-dark">Add comment</button>
         </form>
     </div>
 {% endblock %}

@@ -168,12 +168,9 @@ class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
 
 def CommentCreateView(request, pk):
     post = Post.objects.get(id=pk)
-    print(post)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            print("Good")
-            # form.save()
             content = form.cleaned_data['content']
             comment = Comment.objects.create(content=content, post=post, author=request.user)
             comment.save()
