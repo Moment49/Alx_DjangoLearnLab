@@ -138,7 +138,7 @@ class PostDetailView(DetailView):
         context_data['comment_data'] = comment
         return context_data
 
-class CommentEdit(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     template_name = 'blog/comment_edit.html'
