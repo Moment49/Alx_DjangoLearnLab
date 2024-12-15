@@ -166,7 +166,7 @@ class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
         if comment.post.author == self.request.user:
             return self.request.user
 
-def create_comment(request, pk):
+def CommentCreateView(request, pk):
     post = Post.objects.get(id=pk)
     print(post)
     if request.method == 'POST':
