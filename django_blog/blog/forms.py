@@ -38,7 +38,7 @@ class UserForm(UserChangeForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content"]
+        fields = ["title", "content", 'tags']
     
     def save(self, commit=True):
         instance = super(PostForm, self).save(commit=False)
