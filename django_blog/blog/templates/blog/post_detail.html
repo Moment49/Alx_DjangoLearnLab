@@ -30,6 +30,13 @@
         <a href="{% url 'comment_delete' comment.id %}" class="btn btn-danger">Delete comment</a>
         {% endfor %}
 
+        <!-- Add a comment -->
+         <h2>Add a Comment</h2>
+        <form method="post" action="{% url 'create_comment' post.id %}">
+            {% csrf_token %}
+            {{comment_form.as_p}}
+            <button type="submit">Add comment</button>
+        </form>
     </div>
 {% endblock %}
 

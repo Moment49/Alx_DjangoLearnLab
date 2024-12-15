@@ -136,6 +136,7 @@ class PostDetailView(DetailView):
         post_id = self.kwargs['pk']
         comment = Comment.objects.filter(post=post_id)
         context_data['comment_data'] = comment
+        context_data['comment_form'] = CommentForm
         return context_data
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -165,17 +166,17 @@ class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
         if comment.post.author == self.request.user:
             return self.request.user
 
-
-class CommentCreateView(CreateView):
-    model = Comment
-    form_class = CommentForm
-    template_name = 'blog/comment_create.html'
-    context_object_name = 'comment_blog'
-
-    def get_context_data(self, **kwargs):
-        context_data =  super().get_context_data(**kwargs)
-        post_id = self.kwargs['id']
-        post = Post.objects.get(id=post_id)
-        
-        context_data['comment_data'] = post
-        return context_data
+def create_comment(request, pk):
+    post = Post.objects.get(id=pk)
+    print(post)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            print("Good")
+            # form.save()
+            content = form.cleaned_data['content']
+            comment = Comment.objects.create(content=content, post=post, author=request.user)
+            comment.save()
+            return redirect('detail_post', pk=post.id)
+    
+    return render(request, 'blog/comment_create.html')
