@@ -35,7 +35,6 @@ header nav ul li a {
 
 header nav ul li form button{
     display: inline-block;
-    border: 1px solid red;
     background: black;
 }
 
@@ -88,9 +87,6 @@ footer {
     display: flex;
     gap:0.4rem;
     align-items: center;
-    border: 1px solid red;
-    
-
 }
 
 .form_cta2 .edit_main .profile_img{

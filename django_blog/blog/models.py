@@ -21,6 +21,9 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.post} {self.author} {self.content}"
+
 
 class UserProfile(models.Model):
     bio = models.TextField(blank=True)

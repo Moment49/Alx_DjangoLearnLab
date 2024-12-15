@@ -23,7 +23,11 @@
     <div class="form_cta2">
         <div class="edit_main">
             <div class="profile_img">
-                <img  src="{{ user.profile.profile_img.url }}"/>
+                {% if user.profile.profile_img %}
+                <img  src="{{ user.profile.profile_img.url }}" alt="no image"/>
+                {% else %}
+                <img  src="#" alt="no image"/>
+                {% endif %}
             </div>
             <div class="profile_detail">
                 <h1 class="text-start h3 pb-1 pt-1">Profile Detail</h1>

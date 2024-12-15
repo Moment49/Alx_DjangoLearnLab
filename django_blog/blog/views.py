@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistration, UserForm, ProfileForm, PostForm
+from .forms import UserRegistration, UserForm, ProfileForm, PostForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
@@ -125,18 +125,57 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             print("Valid User")
             return self.request.user
 
-class CommentList(CreateView):
-    model = Comment
-    template_name = 'blog/comment_create.html'
-    context_object_name = 'comment_blog'
 
 class PostDetailView(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
-    context_object_name = "singlepost"
+    context_object_name = "post"
 
-def comment_list(request, post_id):
-    post = Post.objects.get(id=post_id)
-    comments = Comment.objects.filter(post=post)
-    context = {"comments": comments, "post":post}
-    return render(request, 'blog/comments_post.html', context)
+    def get_context_data(self, **kwargs):
+        context_data =  super().get_context_data(**kwargs)
+        post_id = self.kwargs['pk']
+        comment = Comment.objects.filter(post=post_id)
+        context_data['comment_data'] = comment
+        return context_data
+
+class CommentEdit(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_edit.html'
+
+    def get_success_url(self):
+        return reverse_lazy('detail_post', kwargs={"pk": self.object.post.id})
+    
+    def test_func(self):
+        comment = self.get_object()
+        if comment.post.author == self.request.user:
+            return self.request.user
+
+    
+class CommentDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_delete.html'
+    success_url = reverse_lazy('detail_post')
+
+    def get_success_url(self):
+        return reverse_lazy('detail_post', kwargs={"pk":self.object.post.id})
+    
+    def test_func(self):
+        comment = self.get_object()
+        if comment.post.author == self.request.user:
+            return self.request.user
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_create.html'
+    context_object_name = 'comment_blog'
+
+    def get_context_data(self, **kwargs):
+        context_data =  super().get_context_data(**kwargs)
+        post_id = self.kwargs['id']
+        post = Post.objects.get(id=post_id)
+        
+        context_data['comment_data'] = post
+        return context_data

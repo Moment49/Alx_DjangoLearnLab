@@ -26,8 +26,12 @@
     <span>{{ blog.published_date }} by {{blog.author}} </span>
     <p> {{blog.content}}</p>
     <a href="{% url 'detail_post' blog.id %}">See more</a>
+    
+    {% if user.is_authenticated and request.user == blog.author%}
     <a href="{% url 'update_post' blog.id %}" class="btn btn-dark mt-1 mb-1 ms-1">Update</a>
     <a href="{% url 'delete_post' blog.id %}" class="btn btn-danger mt-1 mb-1 ms-1">Delete</a>
+    <hr/>
+    {% endif %}
     <hr/>
 
     {% empty %}
