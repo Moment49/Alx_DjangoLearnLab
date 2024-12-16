@@ -4,19 +4,35 @@
 
 
 {% block header%}
-<header>
-   <nav>
-       <ul>
-           <li><a href="{% url 'home' %}">Home</a></li>
-           <li><a href="{% url 'register' %}">Register</a></li>
-       </ul>
-   </nav>
-</header>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}"> Blogr</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'all_posts' %}">Blog Posts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">News</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          <a href="{% url 'login' %}" class="nav-link me-4">Login</a>
+        </span>
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block hero%}
+<div class="form_cta">
+    <h1  class="text-center h5 pb-4 pt-4  text-dark">You have been logged out</h1>
+    <p class="text-center p-1 text-light"><a href="{% url 'login' %}" class="btn btn-dark mt-1 mb-1 ms-1">Login again</a></p>
+</div>
 {% endblock %}
 
 {% block content %}
- <div class="form_cta">
-    <h1  class="text-center h5 pb-4 pt-4">You have been logged out</h1>
-    <p class="text-center p-1"><a href="{% url 'login' %}" class="btn btn-dark mt-1 mb-1 ms-1">Login again</a></p>
-</div>
 {% endblock %}

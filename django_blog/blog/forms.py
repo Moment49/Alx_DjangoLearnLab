@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile, Post, Comment
 import re
 from django.core.exceptions import ValidationError
+from taggit.forms import TagWidget
 
 class UserRegistration(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
@@ -36,6 +37,10 @@ class UserForm(UserChangeForm):
         fields = ['email']
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(
+        required=False,
+        widget=TagWidget()
+    )
     class Meta:
         model = Post
         fields = ["title", "content", 'tags']

@@ -8,5 +8,5 @@ urlpatterns = [
     path('books/<int:pk>', DetailView.as_view(), name="retrieve_book"),
     path('books/update/<int:pk>', UpdateView.as_view(), name="update_book"),
     path('books/delete/<int:pk>', DeleteView.as_view(), name="delete_book"),
-    path('atouth_ken/', views.obtain_auth_token, name="obtain-token")
+    path('auth_token/', views.obtain_auth_token, name="obtain-token")
 ]

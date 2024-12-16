@@ -5,19 +5,37 @@
 
 
 {% block header%}
-<header>
-   <nav>
-       <ul>
-           <li><a href="{% url 'home' %}">Home</a></li>
-           <li><a href="{% url 'all_posts'%}">Blog Posts</a></li>
-           <li><a href="{% url 'logout' %}">Logout</a></li>
-       </ul>
-   </nav>
-</header>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}"> Blogr</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'all_posts' %}">Blog Posts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">News</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          <a href="{% url 'login' %}" class="nav-link me-4">Login</a>
+        </span>
+        <span class="navbar-text">
+          <a href="{% url 'register' %}" class="nav-link me-4">Sign Up</a>
+        </span>
+      </div>
+    </div>
+  </nav>
 {% endblock %}
 
+{% block hero%}
+    <h1 class="text-center pt-5">ALL BLOG POSTS</h1>
+{% endblock %}
 {% block content %}
-    <h1>All Blog Posts</h1>
+
         {% for blog in all_posts %}
         <hr/>
         <h2>{{ blog.title }}</h2>
@@ -27,6 +45,9 @@
         {% if user.is_authenticated and request.user == blog.author%}
         <a href="{% url 'update_post' blog.id %}" class="btn btn-dark mt-1 mb-1 ms-1">Update</a>
         <a href="{% url 'delete_post' blog.id %}" class="btn btn-danger mt-1 mb-1 ms-1">Delete</a>
+        {% for tag in blog.tags.all %}
+        <p>tag: {{tag}}</p>
+        {% endfor %}
         <hr/>
         {% endif %}
         {% empty %}

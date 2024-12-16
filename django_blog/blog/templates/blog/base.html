@@ -10,24 +10,43 @@
 </head>
 <body>
     
-    {% block header%}
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'all_posts'%}">Blog Posts</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+{% block header%}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"> Blogr</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Blog Posts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">News</a>
+              </li>
             </ul>
-        </nav>
-    </header>
-    {% endblock %}
-
+            <span class="navbar-text">
+                <a href="" class="nav-link me-4">Login</a>
+              </span>
+              <span class="navbar-text">
+                  <button href="" class="nav-link me-5">Sign Up</button>
+              </span>
+          </div>
+        </div>
+      </nav>
+{% endblock %}
+<div class="cta-3">
+  {% block hero%}
+  {% endblock %}
+  </div>
+  
     <div class="content">
         {% block content %}
         <!-- Page-specific content goes here -->
         {% endblock %}
     </div>
+
 
     <footer>
         <p>&copy; 2024 Django Blog</p>

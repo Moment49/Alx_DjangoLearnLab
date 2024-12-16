@@ -93,7 +93,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.save()
+        # Modify the form to save the tags and associate it
+        print(form)
+        tags = form.cleaned_data['tags']
+        title = form.cleaned_data['title']
+        content = form.cleaned_data['content']
+        tag_ = ''
+        for tag in tags:
+            tag_ += tag
+        post = Post.objects.create(title=title, content=content, author=form.instance.author)
+        post.tags.add(tag_)
+        post.save()
         return super().form_valid(form)
     
     
