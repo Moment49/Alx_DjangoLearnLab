@@ -85,6 +85,17 @@ class PostListView(ListView):
     template_name = "blog/post_list.html"
     context_object_name = "all_posts"
 
+class PostByTagListView(ListView):
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "all_posts"
+
+
+    def get_queryset(self):
+        print(self.kwargs)
+        return Post.objects.filter(tags__slug=self.kwargs.get('tag_slug'))
+
+
 def search(request):
     if request.method == "GET":
         q = request.GET['search']
