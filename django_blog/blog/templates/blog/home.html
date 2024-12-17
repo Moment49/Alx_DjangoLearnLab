@@ -50,21 +50,26 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+
+
   <h2>Blog</h2>
   <p>It is a long established fact that a page when looking at its layout</p>
-    {% for blog in all_posts %}
-    <hr/>
-    <h2>{{ blog.title }}</h2>
-    <span>{{ blog.published_date }} by {{blog.author}} </span>
-    <p> {{blog.content}}</p>
-    <a href="{% url 'detail_post' blog.id %}" class="mt-1 mb-1 ms-1">See more</a>
-    {% if user.is_authenticated and request.user == blog.author%}
-    <a href="{% url 'update_post' blog.id %}" class="btn btn-dark mt-1 mb-1 ms-1">Update</a>
-    <a href="{% url 'delete_post' blog.id %}" class="btn btn-danger mt-1 mb-1 ms-1">Delete</a>
-    <hr/>
-    {% endif %}
-    {% empty %}
-    <p>No Blogs yet.</p>
-{% endfor %}
+  <h3 class="active">All</h3>
+    <div class="row g-3">
+      {% for blog in all_posts %}
+      <div class="col-4">
+          <img src="https://th.bing.com/th/id/OIP.twDw1sXK9O2QQzPZoHEg3gHaEK?rs=1&pid=ImgDetMain"  class="img-fluid rounded" width="340px"/>
+          <p>{{ blog.published_date }}</p>
+          <a href="{% url 'detail_post' blog.id %}" class="fs-5 text-dark" style="text-decoration: none; font-weight:500">{{ blog.title }}</a>
+          <p style="font-size: 14px;">{{blog.content}}</p>
+          <div class="mb-3">
+            <img src="{{ blog.author.profile.profile_img.url }}"  class="rounded-circle" width="35px" height="35px"/><span class="text-dark ms-1">{{blog.author.first_name}} {{blog.author.last_name}}</span>  
+          </div>
+      </div>
+      {% endfor %}
+    
+    </div>
+  </div>
 {% endblock %}
 

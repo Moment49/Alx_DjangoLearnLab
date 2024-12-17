@@ -40,7 +40,7 @@
 
 {% block hero%}
     {% if user.is_authenticated %}
-    <h1 class="text-center pt-5">Welcome {{user}}</h1>
+    <h1 class="text-center pt-5">Welcome To your dashboard {{user.first_name}} {{user.last_name}}</h1>
     {% endif %}
 {% endblock %}
 
@@ -57,7 +57,7 @@
     <a href="{% url 'update_post' blog.id %}" class="btn btn-dark mt-1 mb-1 ms-1">Update</a>
     <a href="{% url 'delete_post' blog.id %}" class="btn btn-danger mt-1 mb-1 ms-1">Delete</a>
     {% for tag in blog.tags.all %}
-    <p>tag: {{tag}}</p>
+    <p>tag: <a href="{% url 'posts_by_tag' tag.slug%}">{{tag}}</a></p>
     {% endfor %}
     {% endif %}
     <hr/>
