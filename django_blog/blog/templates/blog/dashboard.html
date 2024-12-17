@@ -20,6 +20,10 @@
             <a class="nav-link" href="#">News</a>
           </li>
         </ul>
+        <form class="d-flex" method="get", action="{% url 'search' %}">
+          <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
         <span class="navbar-text">
             <a href="{% url 'create_post' %}" class="nav-link me-5">Create a post</a>
         </span>
@@ -52,7 +56,9 @@
     {% if user.is_authenticated and request.user == blog.author%}
     <a href="{% url 'update_post' blog.id %}" class="btn btn-dark mt-1 mb-1 ms-1">Update</a>
     <a href="{% url 'delete_post' blog.id %}" class="btn btn-danger mt-1 mb-1 ms-1">Delete</a>
-    <hr/>
+    {% for tag in blog.tags.all %}
+    <p>tag: {{tag}}</p>
+    {% endfor %}
     {% endif %}
     <hr/>
 

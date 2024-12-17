@@ -9,6 +9,7 @@ from .models import UserProfile, User, Post, Comment
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 # Create your views here.
 
 
@@ -83,6 +84,12 @@ class PostListView(ListView):
     model = Post
     template_name = "blog/post_list.html"
     context_object_name = "all_posts"
+
+def search(request):
+    if request.method == "GET":
+        q = request.GET['search']
+        all_posts = Post.objects.filter(Q(title__icontains=q) | Q(content__icontains=q) | Q(tags__name__icontains=q))
+    return render(request, 'blog/dashboard.html', {"all_posts":all_posts})
  
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -94,18 +101,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         # Modify the form to save the tags and associate it
-        print(form)
         tags = form.cleaned_data['tags']
-        title = form.cleaned_data['title']
-        content = form.cleaned_data['content']
-        tag_ = ''
-        for tag in tags:
-            tag_ += tag
-        post = Post.objects.create(title=title, content=content, author=form.instance.author)
-        post.tags.add(tag_)
-        post.save()
+        print(tags)
+        post = form.save()
+        post.tags.add(tags)
+        print(post)
         return super().form_valid(form)
-    
+
     
 class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Post
@@ -115,13 +117,16 @@ class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        tags = form.cleaned_data['tags']
+        print(tags)
+        post = form.save()
+        post.tags.add(tags)
         form.save()
         return super().form_valid(form)
     
     def test_func(self):
         post = self.get_object()
         if post.author == self.request.user:
-            print("Valid User")
             return self.request.user
     
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

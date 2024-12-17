@@ -5,6 +5,7 @@ from .models import UserProfile, Post, Comment
 import re
 from django.core.exceptions import ValidationError
 from taggit.forms import TagWidget
+from taggit.models import Tag 
 
 class UserRegistration(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
@@ -56,10 +57,26 @@ class PostForm(forms.ModelForm):
         title = self.cleaned_data['title']
         regex = re.compile('[0-9@_!#$%^&*()<>?/\|}{~:]')
 
+        tags = self.cleaned_data['tags']
+        content = self.cleaned_data['content']
+        # validate the data
         if len(title) > 200 or regex.search(title) != None:
              raise ValidationError("Title must not contain special characters or numbers and should be less than 200")
         else:
             print("Title is valid")
+
+        if tags:
+            for tag in tags.split(','):
+                try:
+                    tag_obj, created = Tag.objects.get_or_create(name=tag)  # Correct method
+                    print(created, tag_obj)
+                
+                except Exception as e:
+                    print(f"Error creating tag {tag}: {e}")
+     
+
+
+    
        
 class CommentForm(forms.ModelForm):
     class Meta:
