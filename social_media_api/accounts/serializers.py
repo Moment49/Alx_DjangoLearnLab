@@ -32,7 +32,7 @@ class RegisterationSerializer(serializers.ModelSerializer):
         # pop/remove the confirm_password field from the validated_data and pass it to the User model
         confirm_password = validated_data.pop('confirm_password')
         # Create the user
-        user = User.objects.create_user(email=email, password=password, **validated_data)
+        user = get_user_model().objects.create_user(email=email, password=password, **validated_data)
 
         return user
        
