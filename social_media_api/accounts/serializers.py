@@ -6,15 +6,22 @@ from rest_framework.validators import ValidationError
 
 User = get_user_model()
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "email", "password", "username"]
-
 class RegisterationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'bio', 'profile_picture', 'password', 'confirm_password', 'token']
+        
+
+    def get_token(self, obj):
+        token, _ = Token.objects.get_or_create(user=obj)
+        print(type(token))
+        # This will convert the token to a serializable string
+        token = str(token)
+        return token
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -34,21 +41,16 @@ class RegisterationSerializer(serializers.ModelSerializer):
         # Create the user
         user = get_user_model().objects.create_user(email=email, password=password, **validated_data)
 
+        # Create the Token
+        Token.objects.create(user=user)
+
         return user
-       
-      
-    class Meta:
-        model = User
-        fields = ['email', 'password', 'confirm_password']
 
 
-class TokenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Token
-        fields = ['key']
-    
  
-
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+    def validate(self, attrs):
+        attrs.get('email')
