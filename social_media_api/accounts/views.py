@@ -1,5 +1,5 @@
 from rest_framework.generics import CreateAPIView
-from accounts.serializers import RegisterationSerializer, LoginSerializer
+from accounts.serializers import RegisterationSerializer, LoginSerializer, ProfileSerializer
 from accounts.models import UserProfile
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
@@ -7,6 +7,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
+from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework import status
 
 
 User = get_user_model()
@@ -36,14 +39,47 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 token, created = Token.objects.get_or_create(user=user)
-                return Response({"user_data": serializer.data, 'token':token.key}, 201)
+                return Response({"user_data": serializer.data, 'token':token.key}, 200)
             else:
                 print("Not authenticated") 
                 raise ValueError("User not authenticated")  
     else:
         return Response({"user":"THE LOGIN"})
 
-class ProfileView(APIView):
+class ProfileView(LoginRequiredMixin, APIView):
+    authentication_classes = [TokenAuthentication]
     def get(self, request):
-        ...
+        user = User.objects.get(email=request.user.email)
+        user_profile = UserProfile.objects.get(user=user)
+
+        serializer = ProfileSerializer(user_profile)       
+        return Response({"profile_data": serializer.data})
+    
+    def patch(self, request):
+        # Method to partial update user profile records
+        user = User.objects.get(email=request.user)
+        user_profile = UserProfile.objects.get(user=user)
+        serializer = ProfileSerializer(user_profile, data=request.data, partial=True)
+      
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'message': f'Resource user_profile updated successfully', "user_profile":serializer.data},status=status.HTTP_200_OK)
+        else:
+            print("Bad request")
+            return Response({'message': "Bad Request"},status=status.HTTP_400_BAD_REQUEST)
+        
+    def put(self, request):
+        # Method to partial update user profile records
+        user = User.objects.get(email=request.user)
+        user_profile = UserProfile.objects.get(user=user)
+        serializer = ProfileSerializer(user_profile, data=request.data)
+      
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'message': f'Resource user_profile updated successfully', "user_profile":serializer.data}, status=status.HTTP_200_OK)
+        else:
+            print("Bad request")
+            return Response({'message': "Bad Request"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
