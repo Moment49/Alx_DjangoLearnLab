@@ -10,7 +10,9 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import status
-
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 # Create your views here.
@@ -48,6 +50,7 @@ def login_view(request):
 
 class ProfileView(LoginRequiredMixin, APIView):
     authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         user = User.objects.get(email=request.user.email)
         user_profile = UserProfile.objects.get(user=user)
@@ -80,6 +83,5 @@ class ProfileView(LoginRequiredMixin, APIView):
         else:
             print("Bad request")
             return Response({'message': "Bad Request"}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
