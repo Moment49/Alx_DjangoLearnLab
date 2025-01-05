@@ -59,9 +59,9 @@ class LikePost(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk=None):
-        user = CustomUser.objects.get(email=request.user)
-        post = Post.objects.get(pk=pk)
-        Like.objects.get_or_create(user=user, post=post)
+        post = generics.get_object_or_404(Post, pk=pk)
+        # post = Post.objects.get(pk=pk)
+        Like.objects.get_or_create(user=request.user, post=post)
 
         return Response({"message": "post liked"})
     
