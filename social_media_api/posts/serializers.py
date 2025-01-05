@@ -16,7 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
     author =  UsersSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author']
+        fields = ['id', 'title', 'content', 'author', 'created_at']
     
 
     def validate(self, attrs):

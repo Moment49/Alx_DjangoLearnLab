@@ -93,13 +93,14 @@ class FollowUserView(generics.GenericAPIView):
             else:
                 user = CustomUser.objects.get(email=request.user)
                 users_follow_list = user.following.all()
-                follower_count = users_follow_list.count()
+               
                 if user_to_be_followed in users_follow_list:
                     raise validators.ValidationError("You are already following user")
                 
                 user.following.add(user_to_be_followed)
+                follower_count = user.following.all().count()
                 serializer = UserSerializer(user)
-        return Response ({"message":f"You are following {user_to_be_followed} now", "user_data":{serializer.data}, "following_count":{follower_count}}, 201)
+        return Response ({"message":f"You are following {user_to_be_followed} now", "user_data":serializer.data, "following_count":{follower_count}}, 201)
 
 class UnFollowUserView(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
@@ -111,11 +112,14 @@ class UnFollowUserView(generics.GenericAPIView):
             user_to_be_unfollowed = CustomUser.objects.get(id=user_id)
             user = CustomUser.objects.get(email=request.user)
             users_follow_list = user.following.all()
-            follower_count = users_follow_list.count()
+            print(users_follow_list)
             if user_to_be_unfollowed in users_follow_list:
                 user.following.remove(user_to_be_unfollowed)
-        
-        return Response({"message": f"You have unfollowed {user_to_be_unfollowed} now"})
+                follower_count = users_follow_list.count()
+            else:
+                raise validators.ValidationError("You have alreaady Unfollowed user")
+            
+        return Response({"message": f"You have unfollowed {user_to_be_unfollowed} now", "follow_count":follower_count})
                 
 
 
