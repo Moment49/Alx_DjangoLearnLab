@@ -3,7 +3,7 @@ from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets,  status, filters
 from rest_framework.permissions import IsAuthenticated
-from posts.models import Post, Comment
+from posts.models import Post, Comment, Like
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 import django_filters.rest_framework
@@ -54,3 +54,24 @@ class UserFeedView(views.APIView):
         posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
         serializer = PostSerializer(posts, many=True)
         return Response({"User feed": serializer.data})
+
+class LikePost(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk=None):
+        user = CustomUser.objects.get(email=request.user)
+        post = Post.objects.get(pk=pk)
+        Like.objects.get_or_create(user=user, post=post)
+
+        return Response({"message": "post liked"})
+    
+class UnLikePost(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk=None):
+        user = CustomUser.objects.get(email=request.user)
+        post = Post.objects.get(pk=pk)
+        liked_post = Like.objects.get(post=post)
+        liked_post.delete()
+
+        return Response({"message": "post unliked"})
