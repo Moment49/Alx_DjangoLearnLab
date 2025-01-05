@@ -1,5 +1,5 @@
-from rest_framework.generics import CreateAPIView
-from accounts.serializers import RegisterationSerializer, LoginSerializer, ProfileSerializer
+from rest_framework.generics import CreateAPIView, GenericAPIView
+from accounts.serializers import RegisterationSerializer, LoginSerializer, ProfileSerializer, UserSerializer
 from accounts.models import UserProfile
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
@@ -12,12 +12,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework import generics, viewsets
 
-User = get_user_model()
+
+CustomUser = get_user_model()
 # Create your views here.
 
 class RegisterView(CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = RegisterationSerializer
 
 
@@ -43,7 +46,7 @@ class ProfileView(LoginRequiredMixin, APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        user = User.objects.get(email=request.user.email)
+        user = CustomUser.objects.get(email=request.user.email)
         user_profile = UserProfile.objects.get(user=user)
 
         serializer = ProfileSerializer(user_profile)       
@@ -51,7 +54,7 @@ class ProfileView(LoginRequiredMixin, APIView):
     
     def patch(self, request):
         # Method to partial update user profile records
-        user = User.objects.get(email=request.user)
+        user = CustomUser.objects.get(email=request.user)
         user_profile = UserProfile.objects.get(user=user)
         serializer = ProfileSerializer(user_profile, data=request.data, partial=True)
       
@@ -64,7 +67,7 @@ class ProfileView(LoginRequiredMixin, APIView):
         
     def put(self, request):
         # Method to partial update user profile records
-        user = User.objects.get(email=request.user)
+        user = CustomUser.objects.get(email=request.user)
         user_profile = UserProfile.objects.get(user=user)
         serializer = ProfileSerializer(user_profile, data=request.data)
       
@@ -76,3 +79,12 @@ class ProfileView(LoginRequiredMixin, APIView):
             return Response({'message': "Bad Request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class FollowerView(generics.GenericAPIView):
+    # queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+   
+
+    
+  

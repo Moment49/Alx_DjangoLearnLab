@@ -5,12 +5,12 @@ from rest_framework.validators import ValidationError
 from accounts.models import UserProfile
 
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email', 'first_name', 'last_name', 'bio', 'profile_picture']
+        fields = ['username', 'following', 'followers']
 
 
 class RegisterationSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class RegisterationSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['email', 'username', 'bio', 'profile_picture', 'password', 'confirm_password', 'token']
         
 
@@ -94,7 +94,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.user.profile_picture = profile_pic
         instance.save()
 
-        user = User.objects.get(email=instance.user.email)
+        user = CustomUser.objects.get(email=instance.user.email)
         user.first_name = first_name
         user.last_name = last_name
         user.bio = bio
@@ -102,8 +102,5 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         # Save to db
         user.save()
-
-       
-
 
         return instance
