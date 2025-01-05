@@ -1,23 +1,50 @@
 from rest_framework import serializers
 from posts.models import Post, Comment
 from django.contrib.auth import get_user_model
+import re
+from rest_framework.validators import ValidationError
 
-User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+
+class UsersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['email', 'username']
+        model = get_user_model()
+        fields = ['id', "email", "username"]
+
 
 class PostSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    author =  UsersSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ['title', 'content', 'author']
+        fields = ['id', 'title', 'content', 'author']
+    
+
+    def validate(self, attrs):
+        regex = re.compile('[0-9@_!#$%^&*()<>?/\|}{~:]')
+        title = attrs.get('title')
+        if len(title) > 100 or regex.search(title) != None:
+            raise ValidationError("Title must not contain special characters or numbers and should be less than 100 characters")
+        return attrs
+       
 
 class CommentSerializer(serializers.ModelSerializer):
     post = PostSerializer()
-    user = UserSerializer()
+    user = UsersSerializer(read_only=True)
     class Meta:
-        models = Comment
+        model = Comment
         fields = ['post', 'user', 'content']
+    
+    def create(self, validate_data):
+        post = validate_data.pop('post')
+        post = Post.objects.get(title=post['title'])
+
+        comment = Comment.objects.create(post=post, **validate_data)
+        comment.save()
+        return comment
+    
+    def update(self, instance, validate_data):
+        comment = validate_data.pop('content')
+        instance.content = comment
+        instance.save()
+
+        return instance

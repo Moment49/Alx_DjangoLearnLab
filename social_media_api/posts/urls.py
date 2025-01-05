@@ -4,8 +4,8 @@ from posts.views import PostViewset, CommentViewset
 
 router = DefaultRouter()
 router.register(r"posts", PostViewset,  basename="posts")
-router.register(r"comments", CommentViewset,  basename="posts")
+router.register(r"comments", CommentViewset,  basename="comments")
 
 urlpatterns = [
-
+   
 ] + router.urls

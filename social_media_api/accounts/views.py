@@ -11,7 +11,6 @@ from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
@@ -20,14 +19,6 @@ User = get_user_model()
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterationSerializer
-    model = User
-
-    # Revisit this to understand concept very well
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     return Response({'username': serializer.data}, status=201)
 
 
 @api_view(['POST', 'GET'])
