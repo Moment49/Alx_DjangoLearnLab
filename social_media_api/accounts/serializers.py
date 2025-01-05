@@ -10,7 +10,7 @@ CustomUser = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['username', 'following', 'followers']
+        fields = ['username', 'following']
 
 
 class RegisterationSerializer(serializers.ModelSerializer):

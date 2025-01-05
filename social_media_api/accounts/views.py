@@ -14,7 +14,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework import generics, viewsets
-from rest_framework import permissions
+from rest_framework import permissions, validators
 
 
 CustomUser = get_user_model()
@@ -80,10 +80,44 @@ class ProfileView(LoginRequiredMixin, APIView):
             return Response({'message': "Bad Request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class FollowerView(generics.GenericAPIView):
-    # queryset = CustomUser.objects.all()
+class FollowUserView(generics.GenericAPIView):
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id=None):
+        if request.data['action'] == 'follow_user':
+            user_to_be_followed = CustomUser.objects.get(pk=user_id)
+            if self.request.user == user_to_be_followed:
+                raise Response({"message":"You can not follow yourself"}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                user = CustomUser.objects.get(email=request.user)
+                users_follow_list = user.following.all()
+                follower_count = users_follow_list.count()
+                if user_to_be_followed in users_follow_list:
+                    raise validators.ValidationError("You are already following user")
+                
+                user.following.add(user_to_be_followed)
+                serializer = UserSerializer(user)
+        return Response ({"message":f"You are following {user_to_be_followed} now", "user_data":{serializer.data}, "following_count":{follower_count}}, 201)
+
+class UnFollowUserView(generics.GenericAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id=None):
+        if request.data['action'] == 'unfollow_user':
+            user_to_be_unfollowed = CustomUser.objects.get(id=user_id)
+            user = CustomUser.objects.get(email=request.user)
+            users_follow_list = user.following.all()
+            follower_count = users_follow_list.count()
+            if user_to_be_unfollowed in users_follow_list:
+                user.following.remove(user_to_be_unfollowed)
+        
+        return Response({"message": f"You have unfollowed {user_to_be_unfollowed} now"})
+                
+
 
    
 
