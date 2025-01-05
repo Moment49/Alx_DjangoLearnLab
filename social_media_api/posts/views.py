@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 import django_filters.rest_framework
 from posts.permissions import CustomUserPerm
 from rest_framework import generics, views
+from rest_framework import permissions
 
 CustomUser = get_user_model()
 
@@ -44,13 +45,12 @@ class CommentViewset(viewsets.ModelViewSet):
         return self.request.user.comments.all()
 
 class UserFeedView(views.APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
         user = CustomUser.objects.get(email=request.user)
         following_users = user.following.all()
        
         posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
-        # print(posts.title)
         serializer = PostSerializer(posts, many=True)
         return Response({"User feed": serializer.data})
