@@ -62,17 +62,21 @@ class LikePost(views.APIView):
     def post(self, request, pk=None):
         post = generics.get_object_or_404(Post, pk=pk)
 
-        liked, created = Like.objects.get_or_create(user=request.user, post=post)
-
-        if created:
-            notification = Notification.objects.create(
-                recipient=post.author,
-                actor=request.user,
-                verb="Post liked",
-                target=post
-            )
-        
-        return Response({"message": "post liked", "data":notification}, 200)
+        try:
+            liked_ = Like.objects.get(post=post)
+            if liked_:
+                return Response({"message":"post already liked"})
+        except Like.DoesNotExist:
+            liked, created = Like.objects.get_or_create(user=request.user, post=post)
+            if created:
+                notification = Notification.objects.create(
+                    recipient=post.author,
+                    actor=request.user,
+                    verb="Post liked",
+                    target=post
+                )
+            
+        return Response({"message": "post liked"}, 200)
     
 class UnLikePost(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -83,4 +87,4 @@ class UnLikePost(views.APIView):
         liked_post = Like.objects.get(post=post)
         liked_post.delete()
 
-        return Response({"message": "post unliked"})
+        return Response({"message": "post unliked"}, 200)
