@@ -112,7 +112,6 @@ class UnFollowUserView(generics.GenericAPIView):
             user_to_be_unfollowed = CustomUser.objects.get(id=user_id)
             user = CustomUser.objects.get(email=request.user)
             users_follow_list = user.following.all()
-            print(users_follow_list)
             if user_to_be_unfollowed in users_follow_list:
                 user.following.remove(user_to_be_unfollowed)
                 follower_count = users_follow_list.count()

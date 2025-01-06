@@ -13,8 +13,16 @@ class Notification(models.Model):
     verb = models.CharField(max_length=100)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
-    target = GenericForeignKey( "content_type", "object_id")
+    target = GenericForeignKey("content_type", "object_id")
     timestamp = models.DateTimeField(auto_now=True)
     read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.actor} {self.recipient} {self.target} {self.verb}"
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
 
   

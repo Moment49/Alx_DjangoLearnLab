@@ -10,6 +10,7 @@ import django_filters.rest_framework
 from posts.permissions import CustomUserPerm
 from rest_framework import generics, views
 from rest_framework import permissions
+from notifications.models import Notification
 
 CustomUser = get_user_model()
 
@@ -60,10 +61,18 @@ class LikePost(views.APIView):
 
     def post(self, request, pk=None):
         post = generics.get_object_or_404(Post, pk=pk)
-        # post = Post.objects.get(pk=pk)
-        Like.objects.get_or_create(user=request.user, post=post)
 
-        return Response({"message": "post liked"})
+        liked, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if created:
+            notification = Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb="Post liked",
+                target=post
+            )
+        
+        return Response({"message": "post liked", "data":notification}, 200)
     
 class UnLikePost(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
