@@ -30,8 +30,8 @@ def login_view(request):
     if request.method == "POST":
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            email = serializer.data.get('email')
-            password = serializer.data.get('password')
+            email = serializer.validated_data.get('email')
+            password = serializer.validated_data.get('password')
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)

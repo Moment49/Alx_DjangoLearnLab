@@ -57,7 +57,7 @@ class RegisterationSerializer(serializers.ModelSerializer):
  
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
 class ProfileSerializer(serializers.ModelSerializer):
     user_profile = serializers.SerializerMethodField()

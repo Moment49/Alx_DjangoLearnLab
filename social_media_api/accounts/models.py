@@ -8,8 +8,8 @@ class UserManager(BaseUserManager):
             raise ValueError("Email is required")
         if password is None:
             raise ValueError("Password is required")
-        # if profile_picture is None:
-        #     raise ValueError("profile_picture is required")
+        if profile_picture is None:
+            raise ValueError("profile_picture is required")
         user = self.model(email=self.normalize_email(email),profile_picture=profile_picture, bio=bio, username=username)
         user.set_password(password)
         user.save(using=self._db)
